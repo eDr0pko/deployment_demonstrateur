@@ -37,28 +37,9 @@ docker-compose --version
 # Création du répertoire pour le projet
 echo "Création du projet Docker..."
 
-mkdir -p /root/site-web
-
-# Création du fichier index.html
-cat > /root/site-web/index.html <<EOL
-<!DOCTYPE html>
-<html lang="fr">
- <head>
-   <meta charset="utf-8">
-   <title> site </title>
-
-   <link href="file.css" rel="stylesheet">
-   <script type="module" src="main.js" defer></script>
-
- </head>
- <body>
-   ceci est mon site
- </body>
-</html>
-EOL
 
 # Création du fichier docker-compose.yml
-cat > /root/docker-compose.yml <<EOL
+cat > /root/deployment_demonstrateur/docker-compose.yml <<EOL
 version: '3.8'
 
 services:
@@ -73,6 +54,7 @@ services:
       MYSQL_PASSWORD: pass_user
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d
     networks:
       - monreseau
     ports:
@@ -113,9 +95,10 @@ EOL
 
 # Lancer les conteneurs avec docker-compose
 echo "Démarrage des conteneurs Docker avec docker-compose..."
-docker-compose -f /root/docker-compose.yml up -d
+docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d
 
 # Affichage des conteneurs en cours d'exécution
+cd deployment_demonstrateur
 docker ps
 
 # Affichage des informations réseau

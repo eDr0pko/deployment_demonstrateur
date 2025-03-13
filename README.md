@@ -4,7 +4,9 @@ Ce mettre dans le /root
 
 apt update && apt install git -y
 
-clone le projet 
+clone le projet
+
+cd deployment_demonstrateur/
 
 faire chmod +x deployment.sh
 

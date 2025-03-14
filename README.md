@@ -1,4 +1,4 @@
-# Instalation de la vm debian 
+# Instalation de la vm debian sous VMWare Workstation
 https://youtu.be/pr54p_7nEHA?si=3T9XeOvmft6K17Sh (Choisir SSH et Server Web a 8min23)
 
 

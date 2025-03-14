@@ -65,7 +65,7 @@ services:
     container_name: apache-web
     restart: always
     volumes:
-      - ./site-web:/var/www/html
+      - ./site-web/pages:/var/www/html
     networks:
       - monreseau
     ports:

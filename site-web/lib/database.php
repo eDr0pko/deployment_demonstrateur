@@ -17,7 +17,7 @@
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
             catch (PDOException $exception) {
-                die("Erreur de connexion à la base de données : " . $exceptione->getMessage());
+                die("Erreur de connexion à la base de données : " . $exception->getMessage());
             }
             return self::$db;
         }

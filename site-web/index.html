@@ -2,40 +2,130 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8">
-        <title> Home </title>
-        <link href="style/main.css" rel="stylesheet">
+        <title>Home - Lab XSS</title>
+        <link rel="stylesheet" href="style/main.css">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-        <script src="js/home.js"></script>
+        <script src="js/home.js" defer></script>
     </head>
     <body>
-        <div class="header">
+
+        <!-- Header avec un meilleur design -->
+        <header class="header">
             <div class="content">
-                <h1>Demonstrateur d'attaque cyber (XSS)</h1>
+                <h1>🛡️ Démonstrateur d'attaque XSS</h1>
+                <p>Explorez et comprenez les vulnérabilités des sites face aux attaques XSS.</p>
             </div>
-        </div>
-        <div class="title">Titre</div>
-        <div class="text">
-            gvfdslutycufdqgvfiqryozetiucdsgvfiryztucdsqfvgigyforztufsuvfgsicuvsgcduvzfdcgsbiyfrevdgsucifdygeridsvcguferyivcdsfdcyvsutvgzsqytdcfvgusqgycdtvscxv
-        </div>
-        <a href="login.html" class="btn-start">Commencer</a>
-        <div class="label-container">
-            <div class="label" id="cookie">
-                <div>cookie</div>
-                <div id="plus">+</div>
-            </div>
-            <div id="cookie-explanation" class="explanation hidden">Le copyright dans le footer d'un site web est un élément essentiel pour la protection des droits d'auteur et la propriété intellectuelle. Il signifie que le contenu, qu'il s'agisse de textes, d'images, de logos, ou de tout autre élément créatif, est la propriété de l'entreprise et est protégé par les lois sur les droits d'auteur. Voici pourquoi cet élément est important :
+        </header>
 
-                Protection du contenu : Il décourage la copie et l'utilisation non autorisée du contenu du site.
-                 tellAffirmation des droits : Cela indique clairement que le contenu appartient à l'entreprise ou au créateur original.
-                 Professionnalisme : Un copyright montre que l'entreprise prend au sérieux la protection de son contenu et de sa marque.
-                 Information légale : Il fournit une base légale pour d'éventuelles actions en cas de violation des droits d'auteur.
-                 Habituellement, cette mention comprend l'année en cours, le nom de l'entreprise ou du propriétaire du site, et une phrasee que « Tous droits réservés ». Son inclusion dans le footer garantit que cette information importante reste visible sur toutes les pages du site, offrant une couche supplémentaire de protection et de professionnalisme.</div>
+        <!-- Section d'introduction -->
+        <section class="intro">
+            <h2>🧐 Qu'est-ce qu'une attaque XSS ?</h2>
+            <p>
+                Une attaque XSS (Cross-Site Scripting) permet d'injecter du code malveillant dans une page web vue par d'autres utilisateurs.
+                Ce laboratoire vous permet d'explorer différents scénarios de faille XSS de manière interactive.
+            </p>
+        </section>
 
+        <!-- Expérimentation interactive -->
+        <section class="lab-section">
+            <h2>🧪 Expérimenter les failles XSS</h2>
+            <p>Testez et comprenez les différents types d’attaques XSS en toute sécurité.</p>
+            <a href="login.html" class="btn-start">🚀 Commencer</a>
+        </section>
 
-            <code> 
-                <script></script>
-            </code>
-        </div>
+        <!-- Explication des cookies (cliquable pour afficher + d'infos) -->
+        <section class="cookies-section">
+            <h2>🍪 Qu'est-ce qu'un cookie ?</h2>
+            <p>
+                Un cookie est un petit fichier stocké sur le navigateur de l'utilisateur. Il permet de garder une trace de ses actions ou préférences.
+                Les cookies peuvent aussi contenir des informations sensibles, rendant les sites vulnérables aux attaques si mal utilisés.
+            </p>
+
+            <!-- Première section: Où utiliser la faille -->
+            <section class="info-box">
+                <div class="label" id="cookie-location">
+                    <span>Où utiliser la faille sur le site ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div id="cookie-location-explanation" class="explanation hidden">
+                    <p>Les cookies peuvent être utilisés pour stocker des données sensibles comme des informations de session, 
+                        ce qui les rend vulnérables aux attaques XSS si mal sécurisés.</p>
+                </div>
+            </section>
+
+            <!-- Deuxième section: Régler la faille -->
+            <section class="info-box">
+                <div class="label" id="cookie-fix">
+                    <span>Comment régler la faille ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div id="cookie-fix-explanation" class="explanation hidden">
+                    <p>Utilisez des attributs sécurisés pour les cookies comme `HttpOnly`, `Secure`, et `SameSite` pour réduire les risques.</p>
+                </div>
+            </section>
+        </section>
+
+        <!-- Section Injection SQL -->
+        <section class="sql-injection-section">
+            <h2>💾 Injection SQL</h2>
+            <p>
+                Une injection SQL permet à un attaquant d'exécuter des requêtes malveillantes dans une base de données via une application web vulnérable.
+            </p>
+
+            <!-- Où utiliser la faille -->
+            <section class="info-box">
+                <div class="label" id="sql-location">
+                    <span>Où utiliser la faille ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div id="sql-location-explanation" class="explanation hidden">
+                    <p>Les formulaires de recherche ou de connexion sont souvent les cibles des injections SQL. Elles permettent d'exécuter des requêtes non filtrées sur la base de données.</p>
+                </div>
+            </section>
+            <!-- Comment régler la faille -->
+            <section class="info-box">
+                <div class="label" id="sql-fix">
+                    <span>Comment régler la faille ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div id="sql-fix-explanation" class="explanation hidden">
+                    <p>Utilisez des requêtes préparées et des ORM (Object-Relational Mapping) pour éviter l'injection directe d'une entrée utilisateur dans la base de données.</p>
+                </div>
+            </section>
+        </section>
+
+        <!-- Section Keylogger -->
+        <section class="keylogger-section">
+            <h2>⏳ Keylogger</h2>
+            <p>
+                Un keylogger est un logiciel malveillant qui enregistre les frappes au clavier et peut être utilisé pour voler des informations sensibles.
+            </p>
+
+            <!-- Où utiliser la faille -->
+            <section class="info-box">
+                <div class="label" id="keylogger-location">
+                    <span>Où utiliser la faille ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div id="keylogger-location-explanation" class="explanation hidden">
+                    <p>Les keyloggers sont souvent injectés via des scripts malveillants sur des pages web vulnérables ou des applications peu sécurisées.</p>
+                </div>
+            </section>
+
+            <!-- Comment régler la faille -->
+            <section class="info-box">
+                <div class="label" id="keylogger-fix">
+                    <span>Comment régler la faille ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div id="keylogger-fix-explanation" class="explanation hidden">
+                    <p>Utilisez des protocoles sécurisés comme HTTPS, et analysez les entrées utilisateur pour éviter l'exécution de code malveillant.</p>
+                </div>
+            </section>
+        </section>
+
+        
+        <!-- Pied de page -->
         <footer class="footer">
             <div><a href="https://isen-ouest.fr/">ISEN</a></div>
             <div class="hor">
@@ -49,6 +139,7 @@
                 <a href="https://www.linkedin.com/in/esteban-fanjul-895865273/" target="_blank">LinkedIn</a>
             </div>
         </footer>
+
     </body>
 </html>
 

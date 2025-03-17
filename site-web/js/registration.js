@@ -43,16 +43,11 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 console.log("Réponse brute du serveur :", response);
-                try {
-                    let data = JSON.parse(response);
-                    if (data.success) {
-                        window.location.href = "login.html";
-                    } else {
-                        errorMessage.text(data.message).css("color", "red");
-                    }
-                } catch (e) {
-                    errorMessage.text("Réponse invalide du serveur.").css("color", "red");
-                    console.error("Erreur de parsing JSON:", e);
+                let data = $.parseJSON(response);
+                if (data.success) {
+                    window.location.href = "login.html";
+                } else {
+                    errorMessage.text(data.message).css("color", "red");
                 }
             },
             error: function (xhr, status, error) {

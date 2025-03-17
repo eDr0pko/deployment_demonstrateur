@@ -27,16 +27,11 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 console.log("Réponse brute :", response);
-                try {
-                    let data = JSON.parse(response);
-                    if (data.success) {
-                        window.location.href = "user.html";
-                    } else {
-                        errorMessage.text(data.message).css("color", "red");
-                    }
-                } catch (e) {
-                    errorMessage.text("Erreur de connexion au serveur.").css("color", "red");
-                    console.error("Erreur de parsing JSON:", e);
+                let data = $.parseJSON(response); // Utilisation de $.parseJSON pour la gestion du JSON
+                if (data.success) {
+                    window.location.href = "user.html";
+                } else {
+                    errorMessage.text(data.message).css("color", "red");
                 }
             },
             error: function (xhr, status, error) {

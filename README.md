@@ -12,6 +12,9 @@ clone le projet
 
 cd deployment_demonstrateur/
 
+/*chmod -R 755 site-web
+chown -R www-data:www-data site-web*/
+
 faire chmod +x deployment.sh
 
 faire sed -i 's/\r$//' deployment.sh

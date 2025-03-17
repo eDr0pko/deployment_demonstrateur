@@ -99,27 +99,28 @@ EOL
 cat > /root/deployment_demonstrateur/Dockerfile <<EOL
 FROM php:apache
 
-# Installer PDO MySQL et redémarrer Apache
-RUN docker-php-ext-install pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+# Installer PDO MySQL, mysqli et redémarrer Apache
+RUN apt-get update && apt-get install -y libmysqlclient-dev \
+    && docker-php-ext-install pdo pdo_mysql mysqli \
+    && docker-php-ext-enable pdo_mysql mysqli
 
 # Activer les logs pour voir les erreurs PHP
 RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/error_reporting.ini \
     && echo "display_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
 
-# Activer le module rewrite (si besoin pour des URL propres)
-RUN a2enmod rewrite
 EOL
 
 # Démarrer les conteneurs avec docker-compose
 echo "Démarrage des conteneurs Docker avec docker-compose..."
-docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d
+docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d --build
 
 # Attendre quelques secondes pour s'assurer que le conteneur Apache est bien démarré
 sleep 5  
 
-# Vérification de l'installation de mysqli dans le conteneur Apache
-echo "Vérification de l'installation de mysqli dans le conteneur Apache..."
+# Vérification de l'installation de mysqli et PDO dans le conteneur Apache
+echo "Vérification de l'installation de mysqli et PDO dans le conteneur Apache..."
 docker exec -it apache-web php -m | grep mysqli
+docker exec -it apache-web php -m | grep pdo_mysql
 
 # Affichage des conteneurs en cours d'exécution
 echo "Affichage des conteneurs en cours d'exécution..."
@@ -128,3 +129,6 @@ docker ps
 # Affichage des informations réseau
 echo "Affichage des informations réseau..."
 ip addr show
+
+# Exécution du script
+echo "Le script est terminé. Tout a été configuré et lancé."

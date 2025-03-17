@@ -36,7 +36,7 @@ docker-compose --version
 
 # Création du répertoire pour le projet
 echo "Création du projet Docker..."
-
+mkdir -p /root/deployment_demonstrateur
 
 # Création du fichier docker-compose.yml
 cat > /root/deployment_demonstrateur/docker-compose.yml <<EOL
@@ -61,7 +61,9 @@ services:
       - "3306:3306"
 
   apache-web:
-    image: php:apache
+    build:
+      context: .
+      dockerfile: Dockerfile  # Utilise Dockerfile pour construire l'image
     container_name: apache-web
     restart: always
     volumes:
@@ -93,26 +95,36 @@ volumes:
   mysql_data:
 EOL
 
-# Lancer les conteneurs avec docker-compose
+# Création du fichier Dockerfile dans le répertoire de l'application
+cat > /root/deployment_demonstrateur/Dockerfile <<EOL
+FROM php:apache
+
+# Installer PDO MySQL et redémarrer Apache
+RUN docker-php-ext-install pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+
+# Activer les logs pour voir les erreurs PHP
+RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/error_reporting.ini \
+    && echo "display_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
+
+# Activer le module rewrite (si besoin pour des URL propres)
+RUN a2enmod rewrite
+EOL
+
+# Démarrer les conteneurs avec docker-compose
 echo "Démarrage des conteneurs Docker avec docker-compose..."
 docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d
 
 # Attendre quelques secondes pour s'assurer que le conteneur Apache est bien démarré
 sleep 5  
 
-# Installation de mysqli dans le conteneur Apache
-echo "Installation de mysqli dans le conteneur Apache..."
-docker exec -it apache-web docker-php-ext-install mysqli
-
-# Redémarrer le conteneur pour appliquer les changements
-docker restart apache-web
-
-# Vérification de l'installation de mysqli
+# Vérification de l'installation de mysqli dans le conteneur Apache
+echo "Vérification de l'installation de mysqli dans le conteneur Apache..."
 docker exec -it apache-web php -m | grep mysqli
 
 # Affichage des conteneurs en cours d'exécution
-cd deployment_demonstrateur
+echo "Affichage des conteneurs en cours d'exécution..."
 docker ps
 
 # Affichage des informations réseau
+echo "Affichage des informations réseau..."
 ip addr show

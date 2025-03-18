@@ -1,6 +1,8 @@
 # Instalation de la vm debian sous VMWare Workstation
 https://youtu.be/pr54p_7nEHA?si=3T9XeOvmft6K17Sh (Choisir SSH a 8min23)
 
+mettre le reseaux en bridge et si ip addr ne vous donne pas l'ip alors https://youtu.be/VVa1Q1wYgEY?si=tLW7U8-SnbD2_Vju
+
 
 
 # deployment_demonstrateur

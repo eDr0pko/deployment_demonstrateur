@@ -39,15 +39,24 @@ ob_start();
             $email = $_POST["email"];
             $password = $_POST["password"];
             $result = dbGetUser($db, $email, $password);
+    
             if ($result !== "error") {
-                // Définition des cookies pour stocker le nom et prénom (valide pour 1 jour)
-                setcookie("username", $result['username'], time() + 86400, "/");
-                setcookie("mail", $result['mail'], time() + 86400, "/");
-                setcookie("profile_picture", $result['profile_picture'], time() + 86400, "/");
-            
-                echo json_encode(["success" => true, "user" => $result]);
+                // Vérifie si les en-têtes sont déjà envoyés avant de définir les cookies
+                if (!headers_sent()) {
+                    setcookie("username", $result['username'], time() + 86400, "/");
+                    setcookie("mail", $result['mail'], time() + 86400, "/");
+                    setcookie("profile_picture", $result['profile_picture'], time() + 86400, "/");
+                } else {
+                    error_log("Erreur : Impossible de définir les cookies, les en-têtes ont déjà été envoyés.");
+                }
+    
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(["success" => true, "user" => $result], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                exit();
             } else {
+                header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(["success" => false, "message" => "E-mail ou mot de passe incorrect."]);
+                exit();
             }
         }
     }

@@ -1,47 +1,47 @@
 #!/bin/bash
-
+ 
 # Vérification si l'utilisateur est root
 if [ "$(id -u)" -ne 0 ]; then
     echo "Ce script doit être exécuté avec des privilèges root."
     exit 1
 fi
-
+ 
 # Installation de Docker
 echo "Installation de Docker..."
 apt update
 apt install apt-transport-https ca-certificates curl software-properties-common -y
-
+ 
 # Ajout de la clé GPG de Docker
 curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
+ 
 # Ajout du dépôt Docker
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
+ 
 # Mise à jour des dépôts et installation de Docker
 apt update
 apt install docker-ce -y
-
+ 
 # Vérification de l'installation de Docker
 systemctl status docker --no-pager
-
+ 
 # Installation de Docker Compose
 echo "Installation de Docker Compose..."
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
+ 
 # Attribution des permissions d'exécution
 chmod +x /usr/local/bin/docker-compose
-
+ 
 # Vérification de l'installation de Docker Compose
 docker-compose --version
-
+ 
 # Création du répertoire pour le projet
 echo "Création du projet Docker..."
-mkdir -p /root/deployment_demonstrateur
-
+ 
+ 
 # Création du fichier docker-compose.yml
 cat > /root/deployment_demonstrateur/docker-compose.yml <<EOL
 version: '3.8'
-
+ 
 services:
   mysql-db:
     image: mysql:latest
@@ -59,11 +59,9 @@ services:
       - monreseau
     ports:
       - "3306:3306"
-
+ 
   apache-web:
-    build:
-      context: .
-      dockerfile: Dockerfile  # Utilise Dockerfile pour construire l'image
+    image: php:apache
     container_name: apache-web
     restart: always
     volumes:
@@ -74,7 +72,7 @@ services:
       - "8080:80"  # HTTP seulement
     depends_on:
       - mysql-db
-
+ 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -86,49 +84,35 @@ services:
       - "8081:80"  # Accès à phpMyAdmin via http://IP_DU_SERVEUR:8081
     networks:
       - monreseau
-
+ 
 networks:
   monreseau:
     driver: bridge
-
+ 
 volumes:
   mysql_data:
 EOL
-
-# Création du fichier Dockerfile dans le répertoire de l'application
-cat > /root/deployment_demonstrateur/Dockerfile <<EOL
-FROM php:apache
-
-# Installer PDO MySQL, mysqli et redémarrer Apache
-RUN apt-get update && apt-get install -y libmysqlclient-dev \
-    && docker-php-ext-install pdo pdo_mysql mysqli \
-    && docker-php-ext-enable pdo_mysql mysqli
-
-# Activer les logs pour voir les erreurs PHP
-RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/conf.d/error_reporting.ini \
-    && echo "display_errors = On" >> /usr/local/etc/php/conf.d/error_reporting.ini
-
-EOL
-
-# Démarrer les conteneurs avec docker-compose
+ 
+# Lancer les conteneurs avec docker-compose
 echo "Démarrage des conteneurs Docker avec docker-compose..."
-docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d --build
-
+docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d
+ 
 # Attendre quelques secondes pour s'assurer que le conteneur Apache est bien démarré
 sleep 5  
-
-# Vérification de l'installation de mysqli et PDO dans le conteneur Apache
-echo "Vérification de l'installation de mysqli et PDO dans le conteneur Apache..."
+ 
+# Installation de mysqli dans le conteneur Apache
+echo "Installation de mysqli dans le conteneur Apache..."
+docker exec -it apache-web docker-php-ext-install mysqli
+ 
+# Redémarrer le conteneur pour appliquer les changements
+docker restart apache-web
+ 
+# Vérification de l'installation de mysqli
 docker exec -it apache-web php -m | grep mysqli
-docker exec -it apache-web php -m | grep pdo_mysql
-
+ 
 # Affichage des conteneurs en cours d'exécution
-echo "Affichage des conteneurs en cours d'exécution..."
+cd deployment_demonstrateur
 docker ps
-
+ 
 # Affichage des informations réseau
-echo "Affichage des informations réseau..."
 ip addr show
-
-# Exécution du script
-echo "Le script est terminé. Tout a été configuré et lancé."

@@ -69,7 +69,7 @@ services:
     networks:
       - monreseau
     ports:
-      - "8080:80"  # HTTP seulement
+      - "0.0.0.0:8080:80"  # HTTP seulement
     depends_on:
       - mysql-db
  
@@ -81,7 +81,7 @@ services:
       PMA_HOST: mysql-db
       PMA_PORT: 3306
     ports:
-      - "8081:80"  # Accès à phpMyAdmin via http://IP_DU_SERVEUR:8081
+      - "0.0.0.0:8081:80"  # Accès à phpMyAdmin via http://IP_DU_SERVEUR:8081
     networks:
       - monreseau
  

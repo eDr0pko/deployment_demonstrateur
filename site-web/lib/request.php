@@ -1,4 +1,5 @@
 <?php
+ob_start();
     include 'database.php';
 
 
@@ -378,6 +379,8 @@
             echo json_encode(["success" => false, "message" => "Utilisateur non connecté."]);
         }
     }
+        
+ob_end_flush();
 ?>
 
 

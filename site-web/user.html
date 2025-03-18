@@ -20,6 +20,12 @@
                 <h2>Bienvenue, <span id="user-name">Nom Prénom</span></h2>
             </div>
             <!-- Image de profil -->
+            <a href = "artist_page.html">
+                <button id="artiste-button" style="display: none;">Page Artiste</button>
+            </a>
+            <a href = "admin_page.html">
+                <button id="admin-button" style="display: none;">Page Admin</button>
+            </a>        
             <a href="profile.html">
                 <img src="images/default_user.png" alt="Photo de profil" class="profile-picture" title="Voir le profil" id="profile-picture" />
             </a>
@@ -48,18 +54,20 @@
                 <span>Nom de la musique</span>
             </div>
             <div class="music-controls">
-                <button>⏮️</button>
-                <button>▶️</button>
-                <button>⏭️</button>
+                <button class="prev-button">⏮️</button>
+                <button class="play-button">▶️</button>
+                <button class="next-button">⏭️</button>
             </div>
-            <div class="progress-bar"></div> <!-- Barre de progression ajoutée -->
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>            
             <div class="music-controls">
                 <button class="like-button">❤️</button>
                 <button class="add-to-playlist-button">➕</button>
             </div>
         </div>
 
-        <!-- Image de retour repositionnée -->
+        <!-- Image de retour home -->
         <a href="index.html" class="house-image">
             <img src="images/Capture_d_écran_2025-03-03_113655-removebg-preview.png" title="Revenir à la page de présentation"/>
         </a>

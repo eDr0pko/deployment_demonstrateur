@@ -337,7 +337,47 @@
         }
     }
     
+    // function to get comments of a song
+    if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"]) && $_GET["action"] === "getComments") {
+        if (isset($_GET["id_song"])) {
+            $result = dbGetComments($db, $_GET["id_song"]);
+            if ($result !== false) {
+                echo json_encode(["success" => true, "comments" => $result]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erreur lors de la récupération des commentaires."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Identifiant de la chanson non fourni."]);
+        }
+    }
 
+    // function to add a comment
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "addComment") {
+        if (isset($_POST["mail"]) && isset($_POST["id_song"]) && isset($_POST["comment"]) && isset($_POST["comment_date"])) {
+            $result = dbAddComment($db, $_POST["mail"], $_POST["id_song"], $_POST["comment"], $_POST["comment_date"]);
+            if ($result === true) {
+                echo json_encode(["success" => true]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erreur lors de l'ajout du commentaire."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Mail, id de la chanson ou commentaire non fourni."]);
+        }
+    }
+
+    // function to check user's role
+    if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"]) && $_GET["action"] === "checkUserType") {
+        if (isset($_COOKIE['mail'])) {
+            $role = dbCheckRole($db, $_COOKIE['mail']);
+            if ($role !== false) {
+                echo json_encode(["success" => true, "role" => $role]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Utilisateur non artiste ou admin."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Utilisateur non connecté."]);
+        }
+    }
 ?>
 
 

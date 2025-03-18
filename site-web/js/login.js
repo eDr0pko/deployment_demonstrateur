@@ -27,7 +27,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 console.log("Réponse brute :", response);
-                let data = $.parseJSON(response); // Utilisation de $.parseJSON pour la gestion du JSON
+                let data = $.parseJSON(response);
                 if (data.success) {
                     window.location.href = "user.html";
                 } else {

@@ -147,8 +147,6 @@ h2, h3 {
     transform: scale(1.2);
 }
 
-
-
 .card-favorite-song p {
     font-size: 14px;
     font-weight: bold;
@@ -160,7 +158,7 @@ h2, h3 {
     justify-content: center;
     flex-wrap: wrap;
     gap: 25px;
-    margin-bottom: 40px;
+    margin-bottom: 80px;
 }
 
 .card-playlist:hover {
@@ -326,26 +324,20 @@ h2, h3 {
     position: relative;
 }
 
-.progress-bar::after {
-    content: '';
-    width: 20%;
+.progress-fill {
+    width: 0%;
     height: 100%;
     background: #f1c40f;
     position: absolute;
     left: 0;
-    animation: progressAnim 5s linear infinite;
-}
-
-@keyframes progressAnim {
-    from { left: 0; }
-    to { left: 100%; }
+    transition: width 0.1s linear; /* Mise à jour fluide */
 }
 
 /* Image retour accueil */
 .house-image {
     position: fixed;
-    bottom: 12%;
-    right: 25px;
+    bottom: 13%;
+    right: 15px;
     opacity: 0.8;
     transition: opacity 0.3s;
 }
@@ -355,25 +347,9 @@ h2, h3 {
 }
 
 .house-image img {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .modal {
     position: fixed;
@@ -400,9 +376,7 @@ h2, h3 {
     margin-bottom: 10px;
 }
 
-
-
-/* 🎵 Style des chansons */
+/* Style des chansons */
 .playlist-song {
     padding: 8px;
     margin: 5px 0;

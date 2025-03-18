@@ -27,16 +27,17 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 console.log("Réponse brute :", response);
-                let data = $.parseJSON(response);
-                if (data.success) {
-                    window.location.href = "user.html";
-                } else {
-                    errorMessage.text(data.message).css("color", "red");
+                try {
+                    let data = JSON.parse(response);
+                    if (data.success) {
+                        window.location.href = "user.html";
+                    } else {
+                        errorMessage.text(data.message).css("color", "red");
+                    }
+                } catch (e) {
+                    console.error("Erreur JSON :", response);
+                    errorMessage.text("Erreur serveur, réponse invalide.").css("color", "red");
                 }
-            },
-            error: function (xhr, status, error) {
-                errorMessage.text("Erreur de connexion au serveur.").css("color", "red");
-                console.error("Erreur AJAX :", error);
             }
         });
     });

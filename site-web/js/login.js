@@ -27,15 +27,16 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 console.log("Réponse brute :", response);
-                try {
-                    let data = JSON.parse(response);
-                    if (data.success) {
+                
+                // Vérifie si la réponse est un objet JSON valide
+                if (typeof response === "object") {
+                    if (response.success) {
                         window.location.href = "user.html";
                     } else {
-                        errorMessage.text(data.message).css("color", "red");
+                        errorMessage.text(response.message).css("color", "red");
                     }
-                } catch (e) {
-                    console.error("Erreur JSON :", response);
+                } else {
+                    console.error("Erreur JSON : Réponse inattendue", response);
                     errorMessage.text("Erreur serveur, réponse invalide.").css("color", "red");
                 }
             }

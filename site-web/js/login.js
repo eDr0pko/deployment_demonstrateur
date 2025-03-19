@@ -1,5 +1,5 @@
-$(document).ready(function () {
-    $("#loginForm").on("submit", function (event) {
+$(document).ready(function(){
+    $("#loginForm").on("submit", function (event){
         event.preventDefault();
 
         let email = $("#email").val().trim();
@@ -7,7 +7,7 @@ $(document).ready(function () {
         let errorMessage = $("#error-message");
 
         // Check if email and password are not empty
-        if (email === "" || password === "") {
+        if (email === "" || password === ""){
             errorMessage.text("Veuillez remplir tous les champs.").css("color", "red");
             return;
         }
@@ -25,20 +25,17 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
-            success: function (response) {
-                console.log("Réponse brute :", response);
-                
-                // Vérifie si la réponse est un objet JSON valide
-                if (typeof response === "object") {
-                    if (response.success) {
-                        window.location.href = "user.html";
-                    } else {
-                        errorMessage.text(response.message).css("color", "red");
-                    }
+            success: function(response){
+                let data = JSON.parse(response);
+                if (data.success){
+                    window.location.href = "user.html";
                 } else {
-                    console.error("Erreur JSON : Réponse inattendue", response);
-                    errorMessage.text("Erreur serveur, réponse invalide.").css("color", "red");
+                    errorMessage.text(data.message).css("color", "red");
                 }
+            },
+            error: function(xhr, status, error){
+                errorMessage.text("Erreur de connexion au serveur.").css("color", "red");
+                console.error("Erreur AJAX :", error);
             }
         });
     });

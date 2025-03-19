@@ -1,6 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function (){
     // Get cookie by name
-    function getCookie(name) {
+    function getCookie(name){
         let matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([.$?*|{}\(\)\[\]\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
@@ -9,14 +9,13 @@ $(document).ready(function () {
 
     let userMail = getCookie("mail");
 
-    // Check if user is connected
+    // Check if the user is connected
     if (!userMail) {
-        alert("Utilisateur non authentifié !");
         window.location.href = "login.html";
     }
 
     // Update profile
-    $("#updateProfileForm").on("submit", function (event) {
+    $("#updateProfileForm").on("submit", function (event){
         event.preventDefault();
     
         let username = $("#username").val();
@@ -26,12 +25,12 @@ $(document).ready(function () {
         let userMail = getCookie("mail");
         let responseMessage = $("#responseMessage");
     
-        if (!userMail) {
+        if (!userMail){
             responseMessage.text("Erreur : Impossible de récupérer l'email utilisateur.");
             return;
         }
     
-        if (password !== confirmPassword) {
+        if (password !== confirmPassword){
             responseMessage.text("Les mots de passe ne correspondent pas.");
             return;
         }
@@ -40,10 +39,10 @@ $(document).ready(function () {
         formData.append("action", "updateProfile");
         formData.append("mail", userMail);
         formData.append("username", username);
-        if (password) {
+        if (password){
             formData.append("password", password);
         }
-        if (profilePicture) {
+        if (profilePicture){
             formData.append("profile_picture", profilePicture);
         }
     
@@ -53,11 +52,11 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
-            success: function (response) {
+            success: function (response){
                 response = JSON.parse(response);
                 responseMessage.text(response.message);
             },
-            error: function () {
+            error: function (){
                 responseMessage.text("Une erreur est survenue.");
             }
         });
@@ -102,9 +101,16 @@ $(document).ready(function () {
     let username = getCookie("username");
     let profilePicture = getCookie("profile_picture");
 
+    // Sans problème de sécurité
+    /*
     $("#usernameInput").val(username);
     $("#username").text(username);
+    */
     
+    // ⚠️ Injection directe de username dans le DOM sans échappement !
+    $("#usernameInput").val(username);
+    $("#username").html(username);
+
     if (profilePicture) {
         $("#profilePicture").attr("src", profilePicture);
     }

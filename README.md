@@ -10,15 +10,13 @@ Ce mettre dans le /root de la debian
 
 apt update && apt install git -y
 
-clone le projet
+git clone https://github.com/eDr0pko/deployment_demonstrateur.git
 
 cd deployment_demonstrateur/
 
-/*chmod -R 755 site-web
-chown -R www-data:www-data site-web*/
-
-faire chmod +x deployment.sh
-
-faire sed -i 's/\r$//' deployment.sh
+chmod -R 755 site-web
+chown -R www-data:www-data site-web
+chmod +x deployment.sh
+sed -i 's/\r$//' deployment.sh
 
 executer le .sh grace a la commande ./deployment.sh

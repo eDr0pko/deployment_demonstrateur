@@ -1,4 +1,6 @@
 <?php
+    ob_start();
+
     include 'database.php';
 
     error_reporting(E_ALL);
@@ -33,19 +35,57 @@
     }
     
     // Function to login
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])){
-        if ($_POST["action"] === "login" && isset($_POST["email"]) && isset($_POST["password"])){
+    /*
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
+        if ($_POST["action"] === "login" && isset($_POST["email"]) && isset($_POST["password"])) {
             $email = $_POST["email"];
             $password = $_POST["password"];
             $result = dbGetUser($db, $email, $password);
-            if ($result !== "error"){
-                setcookie("username", $result['username'], time() + 86400, "/");
-                setcookie("mail", $result['mail'], time() + 86400, "/");
-                setcookie("profile_picture", $result['profile_picture'], time() + 86400, "/");
-            
-                echo json_encode(["success" => true, "user" => $result]);
+    
+            if ($result !== "error") {
+                // Vérifie si les en-têtes sont déjà envoyés avant de définir les cookies
+                if (!headers_sent()) {
+                    setcookie("username", $result['username'], time() + 86400, "/");
+                    setcookie("mail", $result['mail'], time() + 86400, "/");
+                    setcookie("profile_picture", $result['profile_picture'], time() + 86400, "/");
+                } else {
+                    error_log("Erreur : Impossible de définir les cookies, les en-têtes ont déjà été envoyés.");
+                }
+    
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(["success" => true, "user" => $result], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                exit();
             } else {
+                header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(["success" => false, "message" => "E-mail ou mot de passe incorrect."]);
+                exit();
+            }
+        }
+    }*/
+    
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
+        if ($_POST["action"] === "login" && isset($_POST["email"]) && isset($_POST["password"])) {
+            $email = $_POST["email"];
+            $password = $_POST["password"];
+            $result = dbGetUser($db, $email, $password);
+    
+            if ($result !== "error") {
+                // Vérifie si les en-têtes sont déjà envoyés avant de définir les cookies
+                if (!headers_sent()) {
+                    setcookie("username", $result['username'], time() + 86400, "/");
+                    setcookie("mail", $result['mail'], time() + 86400, "/");
+                    setcookie("profile_picture", $result['profile_picture'], time() + 86400, "/");
+                } else {
+                    error_log("Erreur : Impossible de définir les cookies, les en-têtes ont déjà été envoyés.");
+                }
+    
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(["success" => true, "user" => $result], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+                exit();
+            } else {
+                header('Content-Type: application/json; charset=utf-8');
+                echo json_encode(["success" => false, "message" => "E-mail ou mot de passe incorrect."]);
+                exit();
             }
         }
     }
@@ -334,7 +374,7 @@
             echo json_encode(["success" => false, "message" => "Identifiant de la chanson non fourni."]);
         }
     }
-/*
+
     // Function to add a comment
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])){
         if (isset($_POST["id_song"]) && isset($_POST["comment"])){
@@ -348,7 +388,7 @@
             echo json_encode(["success" => false, "message" => "Mail, id de la chanson ou commentaire non fourni."]);
         }
     }
-*/
+
     // Function to check user's role
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"]) && $_GET["action"] === "checkUserType"){
         if (isset($_COOKIE['mail'])){
@@ -362,10 +402,25 @@
             echo json_encode(["success" => false, "message" => "Utilisateur non connecté."]);
         }
     }
-?>
 
-<?php
-    /*----Live Search----*/
+    // Function to get the username
+    if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"]) && $_GET["action"] === "getUsername"){
+        if (isset($_POST["mail"])){
+            $result = dbGetUserInfos($db, $mail);
+            if ($result !== false){
+                echo json_encode(["success" => true, "username" => $result['username']]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Erreur lors de la récupération du nom d'utilisateur."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Utilisateur non connecté."]);
+        }
+    }
+
+
+
+    /* ----- -----   ----- -----     Live Search     ----- -----   ----- ----- */
+
     function live_search($db, $input){
         $queries = [
             "users" => "SELECT mail, username FROM users WHERE username LIKE '%$input%' OR mail LIKE '%$input%'",        
@@ -431,7 +486,7 @@
     }
 
 
-    /*----tab choose----*/
+    /* ----- -----   ----- -----     SEARCH TAB     ----- -----   ----- ----- */
 
     function load_tab_data($db, $input){
 
@@ -585,5 +640,8 @@
         $input = $_POST['tableau-option'];
         load_tab_data($db, $input);
     }
+
+    ob_end_flush();
 ?>
+
 

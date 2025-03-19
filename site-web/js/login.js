@@ -26,19 +26,14 @@ $(document).ready(function(){
             processData: false,
             contentType: false,
             success: function(response){
-                let data = JSON.parse(response);
-                if (data.success){
+                if (response.success){
                     window.location.href = "user.html";
                 } else {
-                    errorMessage.text(data.message).css("color", "red");
+                    errorMessage.text(response.message).css("color", "red");
                 }
-            },
-            error: function(xhr, status, error){
-                errorMessage.text("Erreur de connexion au serveur.").css("color", "red");
-                console.error("Erreur AJAX :", error);
             }
         });
     });
 });
-
+            
 

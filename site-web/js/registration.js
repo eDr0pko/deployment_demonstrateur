@@ -42,17 +42,11 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                console.log("Réponse brute du serveur :", response);
-                let data = $.parseJSON(response);
-                if (data.success) {
+                if (response.success === true) {
                     window.location.href = "login.html";
                 } else {
-                    errorMessage.text(data.message).css("color", "red");
+                    errorMessage.text(response.message).css("color", "red");
                 }
-            },
-            error: function (xhr, status, error) {
-                errorMessage.text("Erreur de connexion au serveur.").css("color", "red");
-                console.error("Erreur AJAX :", error);
             }
         });
     });

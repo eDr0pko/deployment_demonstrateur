@@ -18,7 +18,7 @@ $(document).ready(function (){
     $("#updateProfileForm").on("submit", function (event){
         event.preventDefault();
     
-        let username = $("#username").val();
+        let username = $("#usernameInput").val();
         let password = $("#password").val();
         let confirmPassword = $("#confirmPassword").val();
         let profilePicture = $("#profile_picture")[0].files[0];
@@ -53,11 +53,12 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             success: function (response){
-                response = JSON.parse(response);
-                responseMessage.text(response.message);
-            },
-            error: function (){
-                responseMessage.text("Une erreur est survenue.");
+                //response = JSON.parse(response);
+                //responseMessage.text(response.message);
+                responseMessage.text("Profil mis à jour avec succès.");
+
+                $("#profilePicture").attr("src", response.profile_picture);
+                $("#username").text(username);     
             }
         });
 

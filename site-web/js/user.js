@@ -29,12 +29,30 @@ $(document).ready(function (){
         }
     );
 
-    // Search Bar
-    $('#search-form').submit(function(event){
-        event.preventDefault();
-        let searchInput = $('#search').val().trim();
-        
+    // Search bar
+    $(document).ready(function(){
+        $("#search").keyup(function() {
+            var input = $(this).val();
+            if (input != "") {
+                $.post("lib/request.php", { action: "song_search", search: input }, function(response) {
+                    $("#search-result").html(response);
+                    $(".card-musique").click(function() {
+                        let songId = $(this).data("song-id");
+                        let song = songsList.find(s => s.id_song == songId);
+                        if (song) {
+                            let index = songsList.indexOf(song);
+                            playSong(index);
+                        }
+                    });
+                });
+            } else {
+                $("#search-result").html("");
+            }
+        });
     });
+
+
+    // ------ -----   ----- -----     Major     ----- -----   ----- ----- //
 
     // Display the user's linked songs
     if (usermail){
@@ -282,7 +300,7 @@ $(document).ready(function (){
 
                 // Show the song comments when clicked
                 songElement.click(function (e){
-                    if (!$(e.target).hasClass('play-button')){
+                    if (!$(e.target).hasClass('.play-button')){
                         showSongComments(song.id_song);
                     }
                 });
@@ -569,10 +587,10 @@ $(document).ready(function (){
                 console.error("Erreur AJAX :", error);
             }
         });
-    }    
+    }
 });
 
-// function to show the artist button or admin button
+// Function to show the artist button or admin button
 $(document).ready(function(){
     $.getJSON("lib/request.php?action=checkUserType", function(data){
         if (data.success){

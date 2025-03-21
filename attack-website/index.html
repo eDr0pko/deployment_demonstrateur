@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker's machine</title>
+</head>
+<body>
+    <h1>Contenu du fichier texte :</h1>
+    <pre id="contenu">Chargement...</pre>
+
+    <script>
+        // Charger le fichier texte en utilisant Fetch API
+        fetch("attack.php")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("contenu").textContent = data;
+            })
+            .catch(error => {
+                document.getElementById("contenu").textContent = "Erreur lors du chargement.";
+                console.error("Erreur :", error);
+            });
+    </script>
+</body>
+</html>

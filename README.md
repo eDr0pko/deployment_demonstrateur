@@ -14,9 +14,13 @@ git clone https://github.com/eDr0pko/deployment_demonstrateur.git
 
 cd deployment_demonstrateur/
 
-chmod -R 755 site-web
+chmod -R 755 defense-website
 
-chown -R www-data:www-data site-web
+chmod -R 755 attack-website
+
+chown -R www-data:www-data defense-website
+
+chown -R www-data:www-data attack-website
 
 chmod +x deployment.sh
 

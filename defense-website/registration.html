@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Inscription</title>
+        <link href="style/main.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="js/registration.js"></script>
+    </head>
+    <body>
+        <div class="inscription">
+            <div class="container">
+                <h2>Inscription</h2>
+                <form id="registerForm">
+                    <div class="input-group">
+                        <label for="username">Nom d'utilisateur</label>
+                        <input type="text" id="username" placeholder="Entrez votre nom d'utilisateur">
+                    </div>
+                    <div class="input-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="Entrez votre e-mail">
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" placeholder="Entrez votre mot de passe">
+                    </div>
+                    <button type="submit" class="btn-inscript">S'inscrire</button>
+                    <a href="login.html">Se connecter</a>
+                    <p id="error-message"></p>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+
+

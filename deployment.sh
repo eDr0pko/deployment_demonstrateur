@@ -8,6 +8,7 @@ fi
  
 # Installation de Docker
 echo "Installation de Docker..."
+
 apt update
 apt install apt-transport-https ca-certificates curl software-properties-common -y
  
@@ -37,7 +38,6 @@ docker-compose --version
 # Création du répertoire pour le projet
 echo "Création du projet Docker..."
  
- 
 # Création du fichier docker-compose.yml
 cat > /root/deployment_demonstrateur/docker-compose.yml <<EOL
 version: '3.8'
@@ -60,16 +60,16 @@ services:
     ports:
       - "3306:3306"
  
-  apache-web:
+  vulnerable-website:
     image: php:apache
     container_name: apache-web
     restart: always
     volumes:
-      - ./site-web:/var/www/html
+      - ./defense-website:/var/www/html
     networks:
       - monreseau
     ports:
-      - "0.0.0.0:8080:80"  # HTTP seulement
+      - "0.0.0.0:8080:80"  # http://IP_DU_SERVEUR:8080
     depends_on:
       - mysql-db
  
@@ -81,9 +81,18 @@ services:
       PMA_HOST: mysql-db
       PMA_PORT: 3306
     ports:
-      - "0.0.0.0:8081:80"  # Accès à phpMyAdmin via http://IP_DU_SERVEUR:8081
+      - "0.0.0.0:8081:80"  # http://IP_DU_SERVEUR:8081
     networks:
       - monreseau
+
+  attacker's-website:
+    image: php:apache
+    container_name: apache-web
+    restart: always
+    volumes:
+      - ./attack-website:/var/www/html
+    ports:
+      - "0.0.0.0:2222:22"  # http://IP_DU_SERVEUR:2222
  
 networks:
   monreseau:
@@ -96,7 +105,7 @@ EOL
 # Lancer les conteneurs avec docker-compose
 echo "Démarrage des conteneurs Docker avec docker-compose..."
 docker-compose -f /root/deployment_demonstrateur/docker-compose.yml up -d
- 
+
 # Attendre quelques secondes pour s'assurer que le conteneur Apache est bien démarré
 sleep 5  
  

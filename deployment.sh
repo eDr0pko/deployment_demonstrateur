@@ -60,7 +60,7 @@ services:
     ports:
       - "3306:3306"
  
-  vulnerable-website:
+  apache-web:
     image: php:apache
     container_name: vulnerable-website
     restart: always
@@ -85,7 +85,7 @@ services:
     networks:
       - monreseau
 
-  attacker-website:
+  apache-web:
     image: php:apache
     container_name: attacker-website
     restart: always

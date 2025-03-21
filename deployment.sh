@@ -62,7 +62,7 @@ services:
  
   vulnerable-website:
     image: php:apache
-    container_name: apache-web
+    container_name: vulnerable-website
     restart: always
     volumes:
       - ./defense-website:/var/www/html
@@ -87,7 +87,7 @@ services:
 
   attacker-website:
     image: php:apache
-    container_name: apache-web
+    container_name: attacker-website
     restart: always
     volumes:
       - ./attack-website:/var/www/html

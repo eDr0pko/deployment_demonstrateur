@@ -85,7 +85,7 @@ services:
     networks:
       - monreseau
 
-  attacker's-website:
+  attacker-website:
     image: php:apache
     container_name: apache-web
     restart: always

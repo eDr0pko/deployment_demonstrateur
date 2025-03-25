@@ -92,7 +92,7 @@ services:
     volumes:
       - ./attack-website:/var/www/html
     ports:
-      - "0.0.0.0:2222:22"  # http://IP_DU_SERVEUR:2222
+      - "0.0.0.0:8082:80"  # http://IP_DU_SERVEUR:8082
  
 networks:
   monreseau:

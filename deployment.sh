@@ -111,13 +111,13 @@ sleep 5
  
 # Installation de mysqli dans le conteneur Apache
 echo "Installation de mysqli dans le conteneur Apache..."
-docker exec -it apache-web docker-php-ext-install mysqli
+docker exec -it vulnerable-website docker-php-ext-install mysqli
  
 # Redémarrer le conteneur pour appliquer les changements
-docker restart apache-web
+docker restart vulnerable-website
  
 # Vérification de l'installation de mysqli
-docker exec -it apache-web php -m | grep mysqli
+docker exec -it vulnerable-website php -m | grep mysqli
  
 # Affichage des conteneurs en cours d'exécution
 cd deployment_demonstrateur

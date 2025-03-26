@@ -6,7 +6,7 @@ Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machin
 
 - **VM Debian** : Installez une machine virtuelle Debian en utilisant VMWare Workstation. Une vidéo d'installation est disponible ici : [Installation de la VM Debian](https://youtu.be/pr54p_7nEHA?si=3T9XeOvmft6K17Sh) (choisissez SSH à 8min23).
 
-- **Configuration réseau** : Assurez-vous que la VM est configurée en mode **NAT**. Si la commande `ip addr` ne retourne pas l'adresse IP, consultez cette ressource : [Résolution des problèmes d'adresse IP](https://youtu.be/VVa1Q1wYgEY?si=tLW7U8-SnbD2_Vju).
+- **Configuration réseau** : Assurez-vous que la VM est configurée en mode **NAT**.
 
 ## Schéma des Conteneurs Docker
 

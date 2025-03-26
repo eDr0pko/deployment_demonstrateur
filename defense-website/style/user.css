@@ -35,6 +35,11 @@ body {
     z-index: 1;
 }
 
+.navbar h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
 /* Texte "Bienvenue, Nom Prénom" */
 .profile-user h2 {
     font-size: 32px;

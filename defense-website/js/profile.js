@@ -1,34 +1,53 @@
-$(document).ready(function (){
-    // Get cookie by name
-    function getCookie(name){
-        let matches = document.cookie.match(new RegExp(
-            "(?:^|; )" + name.replace(/([.$?*|{}\(\)\[\]\/\+^])/g, '\\$1') + "=([^;]*)"
-        ));
-        return matches ? decodeURIComponent(matches[1]) : undefined;
+let usermail = null;
+let username = null;
+
+$(document).ready(function(){
+    $.ajax({
+        url: 'lib/session.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            if (!response.loggedIn) {
+                window.location.href = "login.html";
+            } else {
+                usermail = response.mail;
+                username = response.username;
+                
+                // Update the user's name and email
+                $('#user-name').text(username);
+                $('#usermail').text(usermail);
+
+                // display the user's profile picture
+                if (response.profile_picture){
+                    $('#profilePicture').attr('src', response.profile_picture);
+                }
+
+                // Call the function to initialize the user data
+                initUserData();
+            }
+        },
+        error: function() {
+            alert('Erreur lors de la vérification de la session.');
+        }
+    });
+});
+
+
+function initUserData(){
+    if (!usermail) {
+        console.error("Erreur : usermail non défini lors de l'initialisation !");
+        return;
     }
 
-    let userMail = getCookie("mail");
-
-    // Check if the user is connected
-    if (!userMail) {
-        window.location.href = "login.html";
-    }
-
-    // Update profile
-    $("#updateProfileForm").on("submit", function (event){
+    // Mise à jour du formulaire de profil
+    $("#updateProfileForm").on("submit", function(event){
         event.preventDefault();
     
-        let username = $("#usernameInput").val();
+        let newUsername = $("#usernameInput").val();
         let password = $("#password").val();
         let confirmPassword = $("#confirmPassword").val();
         let profilePicture = $("#profile_picture")[0].files[0];
-        let userMail = getCookie("mail");
         let responseMessage = $("#responseMessage");
-    
-        if (!userMail){
-            responseMessage.text("Erreur : Impossible de récupérer l'email utilisateur.");
-            return;
-        }
     
         if (password !== confirmPassword){
             responseMessage.text("Les mots de passe ne correspondent pas.");
@@ -37,8 +56,8 @@ $(document).ready(function (){
     
         let formData = new FormData();
         formData.append("action", "updateProfile");
-        formData.append("mail", userMail);
-        formData.append("username", username);
+        formData.append("mail", usermail);
+        formData.append("username", newUsername);
         if (password){
             formData.append("password", password);
         }
@@ -53,36 +72,26 @@ $(document).ready(function (){
             processData: false,
             contentType: false,
             success: function (response){
-                //response = JSON.parse(response);
-                //responseMessage.text(response.message);
                 responseMessage.text("Profil mis à jour avec succès.");
 
                 $("#profilePicture").attr("src", response.profile_picture);
-                $("#username").text(username);     
+                $("#username").text(newUsername);     
             }
         });
 
-        // Clear form fields
+        // Nettoyage des champs après soumission
         $("#password").val("");
         $("#confirmPassword").val("");
         $("#profile_picture").val("");
     });
-    
 
-    // Delete account
+    // Suppression du compte
     $("#deleteAccountBtn").on("click", function () {
         if (confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) {
-            let userMail = getCookie("mail");
-    
-            if (!userMail) {
-                alert("Erreur : Impossible de récupérer l'email utilisateur.");
-                return;
-            }
-    
             $.ajax({
                 url: "lib/request.php",
                 type: "POST",
-                data: JSON.stringify({ action: "deleteAccount", mail: userMail }),
+                data: JSON.stringify({ action: "deleteAccount", mail: usermail}),
                 contentType: "application/json",
                 success: function (data) {
                     data = JSON.parse(data);
@@ -97,24 +106,10 @@ $(document).ready(function (){
             });
         }
     });
-    
-    // Get user data
-    let username = getCookie("username");
-    let profilePicture = getCookie("profile_picture");
 
-    // Sans problème de sécurité
-    /*
+    // Mise à jour du profil avec les données récupérées
     $("#usernameInput").val(username);
     $("#username").text(username);
-    */
-    
-    // ⚠️ Injection directe de username dans le DOM sans échappement !
-    $("#usernameInput").val(username);
-    $("#username").html(username);
-
-    if (profilePicture) {
-        $("#profilePicture").attr("src", profilePicture);
-    }
-});
+}
 
 

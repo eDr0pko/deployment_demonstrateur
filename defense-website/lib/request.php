@@ -1,5 +1,6 @@
 <?php
     ob_start();
+    session_start();
 
     include 'database.php';
 
@@ -62,21 +63,18 @@
     }
     
     // Function to login
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])) {
-        if ($_POST["action"] === "login" && isset($_POST["email"]) && isset($_POST["password"])) {
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])){
+        if ($_POST["action"] === "login" && isset($_POST["email"]) && isset($_POST["password"])){
             $email = $_POST["email"];
             $password = $_POST["password"];
             $result = dbGetUser($db, $email, $password);
     
-            // Check if the email and password are correct
-            if ($result !== "error") {
-                // Check if headers have already been sent
-                if (!headers_sent()) {
-                    setcookie("username", $result['username'], time() + 86400, "/");
-                    setcookie("mail", $result['mail'], time() + 86400, "/");
-                    setcookie("profile_picture", $result['profile_picture'], time() + 86400, "/");
-                }
-    
+            if ($result !== "error"){
+                // Set the session
+                $_SESSION['username'] = $result['username'];
+                $_SESSION['profile_picture'] = $result['profile_picture'];
+                $_SESSION['mail'] = $result['mail'];
+
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(["success" => true, "user" => $result], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 exit();
@@ -102,9 +100,10 @@
 
     // Function for print all playlists of the user
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"])){
-        if ($_GET["action"] === "getPlaylists"){
-            if (isset($_COOKIE['mail'])){
-                $result = dbGetUserPlaylists($db, $_COOKIE['mail']);
+        if ($_GET["action"] === "getPlaylists" && isset($_GET["mail"])){
+            $mail = $_GET["mail"];
+            if (isset($_GET["mail"])){
+                $result = dbGetUserPlaylists($db, $mail);
                 if ($result !== false){
                     echo json_encode(["success" => true, "playlists" => $result]);
                 } else {
@@ -135,9 +134,10 @@
 
     // Function for print all liked songs of the user
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"])){
-        if ($_GET["action"] === "getLikedSongs"){
-            if (isset($_COOKIE['mail'])){
-                $result = dbGetLikedSongs($db, $_COOKIE['mail']);
+        if ($_GET["action"] === "getLikedSongs" && isset($_GET["mail"])){
+            if (isset($_GET["mail"])){
+                $mail = $_GET["mail"];
+                $result = dbGetLikedSongs($db, $mail);
                 if ($result !== false && !empty($result)){
                     echo json_encode(["success" => true, "likedSongs" => $result]);
                 } else {
@@ -245,8 +245,8 @@
     
     // Function to add a song to a liked song
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "addLike"){
-        if (isset($_POST["id_song"])){
-            $result = dbAddLikedSong($db, $_COOKIE['mail'], $_POST["id_song"]);
+        if (isset($_POST["id_song"]) && isset($_POST["mail"])){
+            $result = dbAddLikedSong($db, $_POST["mail"], $_POST["id_song"]);
             if ($result === true){
                 echo json_encode(["success" => true]);
             } else {
@@ -292,7 +292,9 @@
 
         if ($username){
             $success = dbUpdateUsername($db, $mail, $username);
-            setcookie("username", $username, time() + 86400, "/");
+
+            // Update the session
+            $_SESSION['username'] = $username;
         }
         if ($password){
             $success = dbUpdatePassword($db, $mail, $password);
@@ -304,7 +306,9 @@
             $allowTypes = array('jpg', 'png', 'jpeg', 'gif');
             if (in_array($fileType, $allowTypes)){
                 $success = dbUpdateProfilePicture($db, $mail, $targetFilePath);
-                setcookie("profile_picture", $targetFilePath, time() + 86400, "/");
+                
+                // Update the session
+                $_SESSION['profile_picture'] = $targetFilePath;
             } else {
                 echo json_encode(["success" => false, "message" => "Erreur lors du téléchargement de l'image."]);
                 exit;
@@ -338,9 +342,10 @@
 
     // Function to create a new playlist
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "createPlaylist") {
-        if (!empty(trim($_POST["playlist_name"]))) {  
+        if (!empty(trim($_POST["playlist_name"])) && isset($_POST["mail"])){
+            $mail = $_POST["mail"];
             $playlistName = trim($_POST["playlist_name"]);
-            $result = dbCreatePlaylist($db, $_COOKIE['mail'], $playlistName);
+            $result = dbCreatePlaylist($db, $mail, $playlistName);
 
             if ($result === true) {
                 echo json_encode(["success" => true]);
@@ -383,9 +388,10 @@
     }
 
     // Function to add a comment
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"])){
-        if (isset($_POST["id_song"]) && isset($_POST["comment"])){
-            $result = dbAddComment($db, $_COOKIE['mail'], $_POST["id_song"], $_POST["comment"]);
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["action"]) && $_POST["action"] === "addComment"){
+        if (isset($_POST["id_song"]) && isset($_POST["comment"]) && isset($_POST["mail"])){
+            $mail = $_POST["mail"];
+            $result = dbAddComment($db, $mail, $_POST["id_song"], $_POST["comment"]);
             if ($result === true){
                 echo json_encode(["success" => true]);
             } else {;
@@ -396,8 +402,9 @@
 
     // Function to check user's role
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"]) && $_GET["action"] === "checkUserType"){
-        if (isset($_COOKIE['mail'])){
-            $role = dbCheckRole($db, $_COOKIE['mail']);
+        if (isset($_GET["mail"])){
+            $mail = $_GET["mail"];
+            $role = dbCheckRole($db, $mail);
             if ($role !== false){
                 echo json_encode(["success" => true, "role" => $role]);
             } else {
@@ -410,7 +417,9 @@
 
     // Function to get the username
     if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["action"]) && $_GET["action"] === "getUsername"){
-        if (isset($_POST["mail"])){
+        error_log("mail: " . $_GET["mail"]);
+        if (isset($_GET["mail"])){
+            $mail = $_GET["mail"];
             $result = dbGetUserInfos($db, $mail);
             if ($result !== false){
                 echo json_encode(["success" => true, "username" => $result['username']]);
@@ -420,7 +429,7 @@
         } else {
             echo json_encode(["success" => false, "message" => "Utilisateur non connecté."]);
         }
-    }
+    }    
 
 
 

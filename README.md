@@ -13,7 +13,7 @@ Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machin
 Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 
 ```
- _________________________________________________________________________
+ ____VM___________________________________________________________________
 |                                                                         |                           
 |                              RÉSEAU DOCKER                              |   
 |                                                                         |
@@ -32,6 +32,8 @@ Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 |  |    (Port : 8081)    |                      |    (Port : 3306)    |   |
 |  |_____________________|                      |_____________________|   |
 |                                                                         |
+|                                                                         |
+|                                                                         |
 |   _____________________                                                 |
 |  |                     |                                                |
 |  |       Apache        |                                                | 
@@ -42,20 +44,6 @@ Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 |_________________________________________________________________________|
 ```
 
-```mermaid
-graph TD;
-    subgraph "Réseau Docker"
-        A[Apache - Site Web Défensif (8080)]
-        B[phpMyAdmin (8081)]
-        C[MySQL (3306)]
-        D[Apache - Site Web Attaquant (8082)]
-        
-        A --> B
-        B --> C
-        A --> C
-        D --> A
-    end
-```
 
 - **Site Web Défensif** : Accessible via `http://[votre_ip]:8080`, ce conteneur représente l'application cible à protéger.
 

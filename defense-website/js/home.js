@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     document.getElementById("reset-db").addEventListener("click", function() {
         if (confirm("Êtes-vous sûr de vouloir réinitialiser la base de données ? Cette action est irréversible.")) {
-            fetch('reset_db.php')
+            fetch('/lib/reset_db.php')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('result').textContent = data;
@@ -26,7 +26,7 @@ $(document).ready(function () {
                 });
         }
     });
-    
+
 });
 
 

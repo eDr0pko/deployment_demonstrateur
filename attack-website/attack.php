@@ -19,6 +19,8 @@ error_reporting(E_ALL);
 
         // Écriture dans le fichier (mode append pour ajouter sans écraser)
         file_put_contents($fichier, $ligne, FILE_APPEND | LOCK_EX);
+        clearstatcache(); // Vide le cache du fichier pour s'assurer que fetch le voit bien
+
 
         // Réponse silencieuse (évite de lever des soupçons)
         http_response_code(200);

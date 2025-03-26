@@ -1,5 +1,5 @@
 function chargerFichier() {
-    fetch("cookies.txt")  // On récupère directement cookies.txt
+    fetch("cookies.txt?" + new Date().getTime()) // Ajoute un timestamp pour éviter le cache
         .then(response => response.text())
         .then(data => {
             document.getElementById("contenu").textContent = data;
@@ -9,6 +9,7 @@ function chargerFichier() {
             console.error("Erreur :", error);
         });
 }
+
     
 // Charger le fichier immédiatement au démarrage
 chargerFichier();

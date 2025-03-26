@@ -18,6 +18,7 @@ Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 |                              RÉSEAU DOCKER                              |   
 |                                                                         |
 |   _____________________                                                 |
+|  |                     |                                                | 
 |  |       Apache        |                                                |  
 |  |  Site Web Défensif  |                                                |
 |  |    (Port : 8080)    |                                                |
@@ -32,7 +33,8 @@ Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 |  |_____________________|                      |_____________________|   |
 |                                                                         |
 |   _____________________                                                 |
-|  |       Apache        |                                                |
+|  |                     |                                                |
+|  |       Apache        |                                                | 
 |  |  Site Web Attaquant |                                                |
 |  |    (Port : 8082)    |                                                |
 |  |_____________________|                                                |
@@ -42,9 +44,17 @@ Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 
 ```mermaid
 graph TD;
-    A[Site Web Défensif - 8080] --> B[Base de Données 1 - 8081]
-    A --> C[Base de Données 2 - 8083]
-    D[Site Web Attaquant - 8082] --> A
+    subgraph "Réseau Docker"
+        A[Apache - Site Web Défensif (8080)]
+        B[phpMyAdmin (8081)]
+        C[MySQL (3306)]
+        D[Apache - Site Web Attaquant (8082)]
+        
+        A --> B
+        B --> C
+        A --> C
+        D --> A
+    end
 ```
 
 - **Site Web Défensif** : Accessible via `http://[votre_ip]:8080`, ce conteneur représente l'application cible à protéger.

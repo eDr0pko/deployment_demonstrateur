@@ -15,20 +15,18 @@ $(document).ready(function () {
 
     document.getElementById("reset-db").addEventListener("click", function() {
         if (confirm("Êtes-vous sûr de vouloir réinitialiser la base de données ? Cette action est irréversible.")) {
-            $.ajax({
-                url: "lib/request.php",
-                data: {
-                    action: "reset"
-                },
-                success: function(data) {
-                    alert(data);
-                },
-                error: function(error) {
-                    alert("Erreur : " + error);
-                }
-            });
+            fetch('reset_db.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').textContent = data;
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Erreur lors de la réinitialisation de la base de données';
+                    console.error('Erreur:', error);
+                });
         }
     });
+    
 });
 
 

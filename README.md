@@ -10,32 +10,34 @@ Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machin
 
 ## Schéma des Conteneurs Docker
 
-Le déploiement comprend trois conteneurs Docker interconnectés :
+Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 
 ```
- ___________________________
-|                           |
-|      RÉSEAU DOCKER        |
-|                           |
-|   _____________________   |
-|  |                     |  |
-|  |  Site Web Défensif  |  |
-|  |  (Port : 8080)      |  |
-|  |_____________________|  |
-|                           |
-|   _____________________   |
-|  |                     |  |
-|  |  Base de Données    |  |
-|  |  (Port : 8081)      |  |
-|  |_____________________|  |
-|                           |
-|   _____________________   |
-|  |                     |  |
-|  |  Site Web Attaquant |  |
-|  |  (Port : 8082)      |  |
-|  |_____________________|  |
-|                           |
-|___________________________|
+ _________________________________________________________________________
+|                                                                         |                           
+|                              RÉSEAU DOCKER                              |   
+|                                                                         |
+|   _____________________                                                 |
+|  |       Apache        |                                                |  
+|  |  Site Web Défensif  |                                                |
+|  |    (Port : 8080)    |                                                |
+|  |_____________________|                                                |
+|           |                                                             |
+|           |                                                             |
+|           |                                                             |                          
+|   ________|____________                        _____________________    |
+|  |                     |    Base de Données   |                     |   |
+|  |     phpMyAdmin      |______________________|        MySQL        |   |
+|  |    (Port : 8081)    |                      |    (Port : 3306)    |   |
+|  |_____________________|                      |_____________________|   |
+|                                                                         |
+|   _____________________                                                 |
+|  |       Apache        |                                                |
+|  |  Site Web Attaquant |                                                |
+|  |    (Port : 8082)    |                                                |
+|  |_____________________|                                                |
+|                                                                         |
+|_________________________________________________________________________|
 ```
 
 - **Site Web Défensif** : Accessible via `http://[votre_ip]:8080`, ce conteneur représente l'application cible à protéger.

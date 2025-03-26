@@ -124,4 +124,24 @@ cd deployment_demonstrateur
 docker ps
  
 # Affichage des informations réseau
-ip addr show
+# Récupérer l'adresse IP de ens33
+IP=$(ip addr show ens33 | grep 'inet ' | awk '{print $2}' | cut -d'/' -f1)
+
+# Vérifier si une IP a été trouvée
+if [ -z "$IP" ]; then
+    echo "Erreur : Impossible de récupérer l'adresse IP de ens33."
+    exit 1
+fi
+
+# Affichage stylisé
+echo "____"
+echo "      |"
+echo "      |"
+echo "     \\/"
+echo -e "\e[1;32m$IP   <-- Votre IP globale\e[0m"
+echo "      |__"
+echo "          |"
+echo "         \\/"
+echo -e "\e[1;34m     $IP:8080   <-- IP site web vulnérable http://$IP:8080\e[0m"
+echo -e "\e[1;34m     $IP:8081   <-- IP de la base de données http://$IP:8081\e[0m"
+echo -e "\e[1;34m     $IP:8082   <-- IP site web contrôlé par l'attaquant http://$IP:8082\e[0m"

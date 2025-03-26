@@ -133,6 +133,7 @@ if [ -z "$IP" ]; then
     exit 1
 fi
 
+
 # Affichage stylisé
 echo "____"
 echo "      |"

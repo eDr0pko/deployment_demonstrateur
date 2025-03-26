@@ -81,13 +81,14 @@ CREATE TABLE likes (
 
 -- Création de la table comment
 CREATE TABLE comment (
+    id_comment   INT AUTO_INCREMENT NOT NULL,
     mail         VARCHAR(100) NOT NULL,
     id_song      INT NOT NULL,
     comment      VARCHAR(500) NOT NULL,
     comment_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    CONSTRAINT comment_PK PRIMARY KEY (mail, id_song),
+    CONSTRAINT comment_PK PRIMARY KEY (id_comment),
     CONSTRAINT comment_users_FK FOREIGN KEY (mail) REFERENCES users(mail) ON DELETE CASCADE,
-    CONSTRAINT comment_song0_FK FOREIGN KEY (id_song) REFERENCES songs(id_song) ON DELETE CASCADE
+    CONSTRAINT comment_song_FK FOREIGN KEY (id_song) REFERENCES songs(id_song) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Création de la table appartient (associe chansons et albums)
@@ -109,12 +110,16 @@ CREATE TABLE playlist_songs (
     CONSTRAINT playlist_songs_playlist0_FK FOREIGN KEY (id_playlist) REFERENCES playlist(id_playlist) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
+-- Insertion des données
+
 -- Insertion des utilisateurs (y compris l'admin et utilisateurs simples)
 INSERT INTO users (mail, username, password, profile_picture) VALUES
-('admin@admin.com', 'admin', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_user.png'),
-('user1@user.com', 'Franky', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/perceuse01.jpg'),
-('user2@user.com', 'Lerat', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_user.png'),
-('user3@user.com', 'Jacky', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_user.png');
+('admin@admin.com', 'admin', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png'),
+('user1@user.com', 'Franky', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/perceuse01.jpg'),
+('user2@user.com', 'Lerat', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png'),
+('user3@user.com', 'Jacky', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png');
 
 -- Insertion de l'administrateur
 INSERT INTO admin (mail) VALUES
@@ -122,11 +127,11 @@ INSERT INTO admin (mail) VALUES
 
 -- Insertion des artistes EDM (les artistes sont également des utilisateurs)
 INSERT INTO users (mail, username, password, profile_picture) VALUES
-('avicii@artist.com', 'Avicii', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_artist.png'),
-('martingarrix@artist.com', 'Martin Garrix', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_artist.png'),
-('calvinharris@artist.com', 'Calvin Harris', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_artist.png'),
-('davidguetta@artist.com', 'David Guetta', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_artist.png'),
-('kygo@artist.com', 'Kygo', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', '../images/default_artist.png');
+('avicii@artist.com', 'Avicii', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png'),
+('martingarrix@artist.com', 'Martin Garrix', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png'),
+('calvinharris@artist.com', 'Calvin Harris', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png'),
+('davidguetta@artist.com', 'David Guetta', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png'),
+('kygo@artist.com', 'Kygo', '$2y$10$ZrzU4mTG7GtqsY8LKKg0.uZfpCgo1X2.SromWlOK8iEvp..2v/OES', 'images/default_user.png');
 
 -- Déclaration des artistes dans la table artist
 INSERT INTO artist (mail) VALUES
@@ -145,16 +150,16 @@ INSERT INTO album (name) VALUES
 -- Insertion des chansons
 -- La colonne "time" indique la durée de la chanson au format HH:MM:SS
 INSERT INTO songs (name, song, time, picture, id_artist) VALUES
-('Wake Me Up', 'avicci_wake_me_up.mp3', '00:04:10', '../../images/wake_me_up.jpg', 1),
-('Levels', 'avicci_levels.mp3', '00:03:30', '../../images/levels.jpg', 1),
-('Scared to Be Lonely', 'scared_to_be_lonely.mp3', '00:03:45', '../../images/scared_to_be_lonely.jpg', 2),
-('Animals', 'animals.mp3', '00:04:00', '../../images/animals.jpg', 2),
-('Summer', 'summer.mp3', '00:03:20', '../../images/summer.png', 3),
-('Feel So Close', 'feel_so_close.mp3', '00:03:15', '../../images/feel_so_close.jpg', 3),
-('Titanium', 'titanium.mp3', '00:04:05', '../../images/titanium.jpg', 4),
-('Play Hard', 'play_hard.mp3', '00:03:50', '../../images/play_hard.jpg', 4),
-('Firestone', 'firestone.mp3', '00:03:40', '../../images/firestone.jpg', 5),
-('Stole the Show', 'stole_the_show.mp3', '00:04:00', '../../images/stole_the_show.jpg', 5);
+('Wake Me Up', 'avicci_wake_me_up.mp3', '00:04:32', 'images/wake_me_up.jpg', 1),
+('Levels', 'avicci_levels.mp3', '00:03:18', 'images/levels.jpg', 1),
+('Scared to Be Lonely', 'scared_to_be_lonely.mp3', '00:03:41', 'images/scared_to_be_lonely.jpg', 2),
+('Animals', 'animals.mp3', '00:03:11', 'images/animals.jpg', 2),
+('Summer', 'summer.mp3', '00:03:53', 'images/summer.png', 3),
+('Feel So Close', 'feel_so_close.mp3', '00:04:06', 'images/feel_so_close.jpg', 3),
+('Titanium', 'titanium.mp3', '00:04:05', 'images/titanium.jpg', 4),
+('Play Hard', 'play_hard.mp3', '00:04:01', 'images/play_hard.jpg', 4),
+('Firestone', 'firestone.mp3', '00:04:34', 'images/firestone.jpg', 5),
+('Stole the Show', 'stole_the_show.mp3', '00:03:38', 'images/stole_the_show.jpg', 5);
 
 -- Associer des chansons aux albums
 INSERT INTO appartient (id_song, id_album) VALUES
@@ -175,9 +180,11 @@ INSERT INTO playlist_songs (id_song, id_playlist) VALUES
 INSERT INTO likes (id_song, mail, notice) VALUES
 (1, 'user1@user.com', 'Une pure merveille !'),
 (2, 'user1@user.com', 'Énorme classique.'),
-(5, 'user2@user.com', 'Parfait pour l\'été !');
+(5, 'user2@user.com', 'Parfait pour l été !');
 
 -- Ajout de commentaires
 INSERT INTO comment (mail, id_song, comment) VALUES
-('user1@user.com', 1, 'Toujours aussi bon, même après des années !'),
+('user1@user.com', 1, 'Toujours aussi bon !'),
 ('user2@user.com', 5, 'Calvin Harris sait comment faire vibrer !');
+
+

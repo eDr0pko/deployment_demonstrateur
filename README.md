@@ -42,11 +42,10 @@ Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
 
 ```mermaid
 graph TD;
-    A[Site Web Défensif - 8080] -->|Connexion| B[Base de Données 1 - 8081]
-    A -->|Connexion| C[Base de Données 2 - 8083]
-    D[Site Web Attaquant - 8082] -->|Tentative d'attaque| A
-
-
+    A[Site Web Défensif - 8080] --> B[Base de Données 1 - 8081]
+    A --> C[Base de Données 2 - 8083]
+    D[Site Web Attaquant - 8082] --> A
+```
 
 - **Site Web Défensif** : Accessible via `http://[votre_ip]:8080`, ce conteneur représente l'application cible à protéger.
 

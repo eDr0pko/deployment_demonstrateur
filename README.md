@@ -10,38 +10,39 @@ Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machin
 
 ## Schéma des Conteneurs Docker
 
-Le déploiement comprend 4 conteneurs Docker dont 3 accesible :
+Le déploiement inclut quatre conteneurs Docker. Deux d'entre eux sont dédiés à la base de données et sont reliés à un troisième conteneur, formant ainsi le site vulnérable. Le quatrième conteneur représente le site contrôlé par l'attaquant. Seuls les trois conteneurs situés à gauche sont accessibles via un navigateur:
 
 ```
- ____VM___________________________________________________________________
-|                                                                         |                           
-|                              RÉSEAU DOCKER                              |   
-|                                                                         |
-|   _____________________                                                 |
-|  |                     |                                                | 
-|  |       Apache        |                                                |  
-|  |  Site Web Défensif  |                                                |
-|  |    (Port : 8080)    |                                                |
-|  |_____________________|                                                |
-|           |                                                             |
-|           |                                                             |
-|           |                                                             |                          
-|   ________|____________                        _____________________    |
-|  |                     |    Base de Données   |                     |   |
-|  |     phpMyAdmin      |______________________|        MySQL        |   |
-|  |    (Port : 8081)    |                      |    (Port : 3306)    |   |
-|  |_____________________|                      |_____________________|   |
-|                                                                         |
-|                                                                         |
-|                                                                         |
-|   _____________________                                                 |
-|  |                     |                                                |
-|  |       Apache        |                                                | 
-|  |  Site Web Attaquant |                                                |
-|  |    (Port : 8082)    |                                                |
-|  |_____________________|                                                |
-|                                                                         |
-|_________________________________________________________________________|
+ ____VM_____________________________________________________________________________
+|                                                                                   |                           
+|                                   RÉSEAU DOCKER                                   |   
+|                                                                                   |
+|   _______________________________site vulnérable_______________________________   |
+|  |     _____________________                                                   |  |
+|  |    |                     |                                                  |  | 
+|  |    |       Apache        |                                                  |  |  
+|  |    |  Site Web Défensif  |                                                  |  |
+|  |    |    (Port : 8080)    |                                                  |  |
+|  |    |_____________________|                                                  |  |
+|  |             |                                                               |  |
+|  |             |                                                               |  |
+|  |             |                                                               |  |                          
+|  |     ________|____________                        _____________________      |  |
+|  |    |                     |    Base de Données   |                     |     |  |
+|  |    |     phpMyAdmin      |______________________|        MySQL        |     |  |
+|  |    |    (Port : 8081)    |                      |    (Port : 3306)    |     |  |
+|  |    |_____________________|                      |_____________________|     |  |
+|  |                                                                             |  |
+|  |_____________________________________________________________________________|  |
+|                                                                                   |
+|        _____________________                                                      |
+|       |                     |                                                     |
+|       |       Apache        |                                                     | 
+|       |  Site Web Attaquant | <--site contrôlé par l'attaquant                    |
+|       |    (Port : 8082)    |                                                     |
+|       |_____________________|                                                     |
+|                                                                                   |
+|___________________________________________________________________________________|
 ```
 
 

@@ -9,7 +9,7 @@ Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machin
 2. [Schéma des Conteneurs Docker](#Schéma-des-Conteneurs-Docker)  
 3. [Instructions de Déploiement](#Instructions-de-Déploiement)  
 4. [Accès aux Services](#Accès-aux-Services)  
-5. [Identifiants de connexion](#Identifiants-de-connexion)  
+5. [Identifiants de connexion](#Identifiants-de-connexion)
  
 ---
 
@@ -128,7 +128,7 @@ Ce script automatisera le déploiement des conteneurs Docker pour les trois serv
 
 Remplacez `[votre_ip]` par l'adresse IP de votre machine virtuelle Debian.
 
-## Identifiants de connexion
+🔑## Identifiants de connexion
 
 Cliquez pour afficher les mots de passe sur le site:
 

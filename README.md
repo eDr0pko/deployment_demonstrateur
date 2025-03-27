@@ -9,7 +9,7 @@ Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machin
 2. [Schéma des Conteneurs Docker](#Schéma-des-Conteneurs-Docker)  
 3. [Instructions de Déploiement](#Instructions-de-Déploiement)  
 4. [Accès aux Services](#Accès-aux-Services)  
-5. [Identifiants de connexion](#Identifiants-de-connexion)  
+5. [Identifiants de connexion 🔑](#Identifiants-de-connexion-🔑)  
  
 ---
 

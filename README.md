@@ -117,3 +117,37 @@ Ce script automatisera le déploiement des conteneurs Docker pour les trois serv
 
 Remplacez `[votre_ip]` par l'adresse IP de votre machine virtuelle Debian.
 
+## Identifiants de connexion 🔑
+
+Cliquez pour afficher les mots de passe sur le site:
+
+
+<details>
+  <summary>Afficher les identifiants</summary>
+
+  **Admin**  
+  - ✉️ Email : `admin@admin.com`  
+  - 🔑 Mot de passe : `1234`
+
+  **Utilisateurs**  
+  - ✉️ Email : `user1@user.com` ou `user2@user.com` ou `user3@user.com`  
+  - 🔑 Mot de passe : `1234`
+
+  **Artistes**  
+    - ✉️ Email : `avicii@artist.com` ou `calvinharris@artist.com` ou `davidguetta@artist.com` ou  `kygo@artist.com` ou `martingarrix@artist.com`
+    - 🔑 Mot de passe : `1234`
+
+</details>
+
+Cliquez pour afficher le mot de passe de la base de donée:
+
+
+<details>
+  <summary>Afficher les identifiants</summary>
+
+  **Admin**  
+  - ✉️ Username : `root`  
+  - 🔑 Mot de passe : `superpass`
+
+</details>
+

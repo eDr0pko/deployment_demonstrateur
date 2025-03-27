@@ -128,7 +128,7 @@ Ce script automatisera le déploiement des conteneurs Docker pour les trois serv
 
 Remplacez `[votre_ip]` par l'adresse IP de votre machine virtuelle Debian.
 
-🔑## Identifiants de connexion
+## Identifiants de connexion
 
 Cliquez pour afficher les mots de passe sur le site:
 

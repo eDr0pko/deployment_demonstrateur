@@ -2,6 +2,19 @@
 
 Ce guide vous accompagne dans le déploiement d'un démonstrateur sur une machine virtuelle Debian, utilisant Docker pour orchestrer plusieurs conteneurs.
 
+---
+
+## 📜 Table des matières  
+1. [Prérequis](#Prérequis)  
+2. [Schéma des Conteneurs Docker](#Schéma des Conteneurs Docker)  
+3. [Instructions de Déploiement](#Instructions de Déploiement)  
+4. [Accès aux Services](#Accès aux Services)  
+5. [Identifiants de connexion](#Identifiants de connexion)  
+6. [Contribuer](#contribuer)  
+7. [Licence](#licence)  
+
+---
+
 ## Prérequis
 
 - **VM Debian** : Installez une machine virtuelle Debian en utilisant VMWare Workstation. Une vidéo d'installation est disponible ici : [Installation de la VM Debian](https://youtu.be/pr54p_7nEHA?si=3T9XeOvmft6K17Sh) (choisissez SSH à 8min23).

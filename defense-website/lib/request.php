@@ -1,5 +1,6 @@
 <?php
     ob_start();
+    session_name('session');
     session_start();
 
     include 'database.php';

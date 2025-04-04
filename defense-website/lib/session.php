@@ -1,4 +1,5 @@
 <?php
+    session_name('session');
     session_start();
 
     if (isset($_SESSION['mail'])) {

@@ -1,5 +1,5 @@
 <?php
-    session_name('session');
+    session_name('cookie_de_session');
     session_start();
 
     if (isset($_SESSION['mail'])) {

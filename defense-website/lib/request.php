@@ -1,6 +1,6 @@
 <?php
     ob_start();
-    session_name('session');
+    session_name('cookie_de_session');
     session_start();
 
     include 'database.php';
